@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANGEETLY - Personalized Music & Gifts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        main {
+            margin-top: 80px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 5rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .section {
+            padding: 4rem 0;
+            background: white;
+            margin: 2rem 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .add-to-cart {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .add-to-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-total {
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .checkout-btn {
+            background: linear-gradient(45deg, #2ed573, #1e90ff);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 213, 115, 0.4);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">SANGEETLY</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="cart-icon" onclick="openCart()">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>Create Magic with Music & Memories</h1>
+                <p>Personalized songs, custom gifts, and unforgettable experiences crafted just for you</p>
+                <a href="#products" class="cta-button">Explore Our Creations</a>
+            </div>
+        </section>
+
+        <section id="products" class="section">
+            <div class="container">
+                <h2>Our Musical Masterpieces</h2>
+                <div class="products-grid">
+                    <div class="product-card" onclick="openProductModal('custom-song')">
+                        <div class="product-image">🎵</div>
+                        <div class="product-info">
+                            <h3>Custom Love Song</h3>
+                            <div class="product-price">₹2,999</div>
+                            <p>A personalized romantic song written and composed exclusively for your special someone</p>
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('Custom Love Song', 2999)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card" onclick="openProductModal('birthday-song')">
+                        <div class="product-image">🎂</div>
+                        <div class="product-info">
+                            <h3>Birthday Anthem</h3>
+                            <div class="product-price">₹1,999</div>
+                            <p>Make birthdays unforgettable with a custom birthday song featuring their name and favorite memories</p>
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('Birthday Anthem', 1999)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card" onclick="openProductModal('music-box')">
+                        <div class="product-image">🎁</div>
+                        <div class="product-info">
+                            <h3>Musical Gift Box</h3>
+                            <div class="product-price">₹3,499</div>
+                            <p>Beautiful handcrafted music box that plays your custom melody with personalized engraving</p>
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('Musical Gift Box', 3499)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card" onclick="openProductModal('wedding-song')">
+                        <div class="product-image">💍</div>
+                        <div class="product-info">
+                            <h3>Wedding Melody</h3>
+                            <div class="product-price">₹4,999</div>
+                            <p>Your love story transformed into a beautiful wedding song for your special day</p>
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('Wedding Melody', 4999)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card" onclick="openProductModal('voice-portrait')">
+                        <div class="product-image">🎤</div>
+                        <div class="product-info">
+                            <h3>Voice Portrait</h3>
+                            <div class="product-price">₹1,799</div>
+                            <p>Transform a voice message into a beautiful visual sound wave art piece</p>
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('Voice Portrait', 1799)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card" onclick="openProductModal('song-lyrics')">
+                        <div class="product-image">📝</div>
+                        <div class="product-info">
+                            <h3>Custom Lyrics</h3>
+                            <div class="product-price">₹999</div>
+                            <p>Beautifully written custom lyrics for any occasion, professionally crafted</p>
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('Custom Lyrics', 999)">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <h2>About SANGEETLY</h2>
+                <p style="font-size: 1.2rem; text-align: center; margin-bottom: 3rem; color: #666;">
+                    We believe every moment deserves its own soundtrack. At SANGEETLY, we transform your emotions, memories, and stories into personalized musical experiences that touch hearts and create lasting memories.
+                </p>
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Creative Excellence</h3>
+                        <p>Our talented musicians and artists craft each piece with passion and precision</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Quick Delivery</h3>
+                        <p>Get your personalized creations within 3-7 business days</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">💝</div>
+                        <h3>100% Personal</h3>
+                        <p>Every creation is unique and tailored specifically to your story</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>Your Musical Cart</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal">Total: ₹0</div>
+            <button class="checkout-btn" onclick="proceedToPayment()">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProductModal()">&times;</span>
+            <div id="productDetails"></div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePaymentModal()">&times;</span>
+            <h2>Secure Payment</h2>
+            <form id="paymentForm">
+                <div style="margin-bottom: 1rem;">
+                    <label>Card Number:</label>
+                    <input type="text" placeholder="1234 5678 9012 3456" style="width: 100%; padding: 0.5rem; margin-top: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="flex: 1;">
+                        <label>Expiry:</label>
+                        <input type="text" placeholder="MM/YY" style="width: 100%; padding: 0.5rem; margin-top: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label>CVV:</label>
+                        <input type="text" placeholder="123" style="width: 100%; padding: 0.5rem; margin-top: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label>Cardholder Name:</label>
+                    <input type="text" placeholder="John Doe" style="width: 100%; padding: 0.5rem; margin-top: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <button type="submit" class="checkout-btn">Complete Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 SANGEETLY. Creating musical memories, one song at a time. ❤️</p>
+        </div>
+    </footer>
+
+    <script>
+        let cart = [];
+        let cartTotal = 0;
+
+        const productDetails = {
+            'custom-song': {
+                title: 'Custom Love Song',
+                price: 2999,
+                image: '🎵',
+                description: 'A personalized romantic song written and composed exclusively for your special someone. Our talented musicians will create a unique melody that captures your love story, complete with custom lyrics that reflect your relationship. Perfect for anniversaries, proposals, or just to say "I love you" in the most beautiful way possible.',
+                features: ['Professional composition', 'Custom lyrics', 'High-quality recording', 'Digital delivery', 'Unlimited revisions']
+            },
+            'birthday-song': {
+                title: 'Birthday Anthem',
+                price: 1999,
+                image: '🎂',
+                description: 'Make birthdays unforgettable with a custom birthday song featuring their name and favorite memories. This upbeat, joyful composition will make them feel truly special on their big day.',
+                features: ['Personalized lyrics with name', 'Upbeat melody', 'Birthday-themed composition', 'Digital MP3 format', '2 revisions included']
+            },
+            'music-box': {
+                title: 'Musical Gift Box',
+                price: 3499,
+                image: '🎁',
+                description: 'Beautiful handcrafted music box that plays your custom melody with personalized engraving. A timeless gift that combines visual beauty with your personal soundtrack.',
+                features: ['Handcrafted wooden box', 'Custom melody', 'Personalized engraving', 'Premium finish', 'Gift wrapping included']
+            },
+            'wedding-song': {
+                title: 'Wedding Melody',
+                price: 4999,
+                image: '💍',
+                description: 'Your love story transformed into a beautiful wedding song for your special day. This romantic composition will be the perfect soundtrack for your wedding ceremony or reception.',
+                features: ['Epic romantic composition', 'Story-based lyrics', 'Professional recording', 'Wedding ceremony ready', 'Sheet music included']
+            },
+            'voice-portrait': {
+                title: 'Voice Portrait',
+                price: 1799,
+                image: '🎤',
+                description: 'Transform a voice message into a beautiful visual sound wave art piece. Perfect for preserving special messages from loved ones in a unique artistic format.',
+                features: ['Sound wave visualization', 'High-quality print', 'Custom colors', 'Framing options', 'Digital and physical copies']
+            },
+            'song-lyrics': {
+                title: 'Custom Lyrics',
+                price: 999,
+                image: '📝',
+                description: 'Beautifully written custom lyrics for any occasion, professionally crafted by our experienced songwriters. Perfect for those who want to create their own musical arrangements.',
+                features: ['Professional songwriting', 'Any theme/occasion', 'Rhyme scheme options', 'Multiple verses', 'Revision rounds included']
+            }
+        };
+
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price: price });
+            cartTotal += price;
+            updateCartDisplay();
+            
+            // Show success animation
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Added! ✓';
+            button.style.background = '#2ed573';
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+            }, 1500);
+        }
+
+        function removeFromCart(index) {
+            cartTotal -= cart[index].price;
+            cart.splice(index, 1);
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            document.getElementById('cartCount').textContent = cart.length;
+            
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; color: #999;">Your cart is empty</p>';
+            } else {
+                cart.forEach((item, index) => {
+                    cartItems.innerHTML += `
+                        <div class="cart-item">
+                            <div>
+                                <strong>${item.name}</strong><br>
+                                ₹${item.price.toLocaleString()}
+                            </div>
+                            <button onclick="removeFromCart(${index})" style="background: #ff4757; color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">Remove</button>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('cartTotal').textContent = `Total: ₹${cartTotal.toLocaleString()}`;
+        }
+
+        function openCart() {
+            document.getElementById('cartModal').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function openProductModal(productId) {
+            const product = productDetails[productId];
+            const productDetailsDiv = document.getElementById('productDetails');
+            
+            productDetailsDiv.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">${product.image}</div>
+                    <h2>${product.title}</h2>
+                    <div style="font-size: 1.5rem; color: #667eea; margin: 1rem 0;">₹${product.price.toLocaleString()}</div>
+                    <p style="margin: 1rem 0; line-height: 1.6;">${product.description}</p>
+                    <div style="text-align: left; margin: 2rem 0;">
+                        <h3>Features:</h3>
+                        <ul style="margin-left: 1rem;">
+                            ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <button onclick="addToCart('${product.title}', ${product.price})" class="add-to-cart">Add to Cart - ₹${product.price.toLocaleString()}</button>
+                </div>
+            `;
+            
+            document.getElementById('productModal').style.display = 'block';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        function proceedToPayment() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            closeCart();
+            document.getElementById('paymentModal').style.display = 'block';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        document.getElementById('paymentForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            // Simulate payment processing
+            const btn = e.target.querySelector('button');
+            btn.textContent = 'Processing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert(`Payment successful! 🎉\n\nTotal: ₹${cartTotal.toLocaleString()}\n\nThank you for choosing SANGEETLY! We'll start working on your order right away. You'll receive updates via email.`);
+                
+                // Clear cart
+                cart = [];
+                cartTotal = 0;
+                updateCartDisplay();
+                closePaymentModal();
+                
+                btn.textContent = 'Complete Payment';
+                btn.disabled = false;
+            }, 2000);
+        };
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        };
+    </script>
+</body>
+</html>
